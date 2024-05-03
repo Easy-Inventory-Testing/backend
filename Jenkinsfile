@@ -8,21 +8,33 @@ pipeline {
         stage ('Compile Stage') {
             steps {
                 script {
-                    sh 'mvn clean compile'
+                    if (isUnix()) {
+                        sh 'mvn clean compile'
+                    } else {
+                        bat 'mvn clean compile'
+                    }
                 }
             }
         }
         stage ('Testing Stage') {
             steps {
                 script {
-                    sh 'mvn test'
+                    if (isUnix()) {
+                        sh 'mvn test'
+                    } else {
+                        bat 'mvn test'
+                    }
                 }
             }
         }
         stage ('Package Stage') {
             steps {
                 script {
-                    sh 'mvn package'
+                    if (isUnix()) {
+                        sh 'mvn package'
+                    } else {
+                        bat 'mvn package'
+                    }
                 }
             }
         }
