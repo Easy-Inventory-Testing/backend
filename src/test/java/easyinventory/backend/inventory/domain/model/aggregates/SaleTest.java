@@ -30,12 +30,16 @@ public class SaleTest {
         Product product2 = new Product( "Laptop2", 10, 10, 10, 10, 10, 1L);
         Sale sale = new Sale("Leo","10-10-2021",200);
 
-        List<Product> products = new ArrayList<>();
-        products.add(product1);
-        products.add(product2);
+        List<Product> cart = new ArrayList<>();
+        cart.add(product1);
+        cart.add(product2);
 
-        sale.addProducts(products);
+        sale.addProducts(cart);
         Integer esperado = 20;
+        assertEquals(sale.calculateTotalCost(), esperado);
+        sale.removeProduct(product1);
+
+        esperado = 10;
         assertEquals(sale.calculateTotalCost(), esperado);
     }
 
