@@ -38,5 +38,16 @@ pipeline {
                 }
             }
         }
+        stage ('Deployment Stage') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'mvn spring-boot:run'
+                    } else {
+                        bat 'mvn spring-boot:run'
+                    }
+                }
+            }
+        }
     }
 }
