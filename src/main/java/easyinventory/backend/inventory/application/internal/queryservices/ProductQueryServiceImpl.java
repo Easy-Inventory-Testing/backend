@@ -1,6 +1,7 @@
 package easyinventory.backend.inventory.application.internal.queryservices;
 
 import easyinventory.backend.inventory.domain.model.aggregates.Product;
+import easyinventory.backend.inventory.domain.model.queries.GetAllProductsQuery;
 import easyinventory.backend.inventory.domain.model.queries.GetProductByIdQuery;
 import easyinventory.backend.inventory.domain.model.queries.GetProductsByUserIdQuery;
 import easyinventory.backend.inventory.domain.services.ProductQueryService;
@@ -27,5 +28,10 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     @Override
     public List<Product> handle(GetProductsByUserIdQuery query) {
         return productRepository.findByUserId(query.userId());
+    }
+
+    @Override
+    public List<Product> handle(GetAllProductsQuery query) {
+        return productRepository.findAll();
     }
 }

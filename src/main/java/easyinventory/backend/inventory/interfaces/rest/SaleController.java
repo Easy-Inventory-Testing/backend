@@ -1,6 +1,7 @@
 package easyinventory.backend.inventory.interfaces.rest;
 
 import easyinventory.backend.inventory.domain.model.commands.DeleteSaleCommand;
+import easyinventory.backend.inventory.domain.model.queries.GetAllSalesQuery;
 import easyinventory.backend.inventory.domain.model.queries.GetSaleByIdQuery;
 import easyinventory.backend.inventory.domain.services.SaleCommandService;
 import easyinventory.backend.inventory.domain.services.SaleQueryService;
@@ -15,6 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/v1/sales", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Sales", description = "Sales Management Endpoints")
@@ -71,4 +75,16 @@ public class SaleController {
         var saleId = saleCommandService.handle(deleteSaleCommand);
         return ResponseEntity.ok(saleId);
     }
+
+    @GetMapping()
+    public ResponseEntity<List<SaleResource>> getAllSales(){
+        var getAllSalesQuery = new GetAllSalesQuery();
+        var sales = saleQueryService.handle(getAllSalesQuery);
+        if (sales.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var saleResource = sales.stream().map(SaleResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(saleResource);
+    }
+
 }

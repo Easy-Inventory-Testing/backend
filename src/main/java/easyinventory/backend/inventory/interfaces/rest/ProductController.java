@@ -1,6 +1,7 @@
 package easyinventory.backend.inventory.interfaces.rest;
 
 import easyinventory.backend.inventory.domain.model.commands.DeleteProductCommand;
+import easyinventory.backend.inventory.domain.model.queries.GetAllProductsQuery;
 import easyinventory.backend.inventory.domain.model.queries.GetProductByIdQuery;
 import easyinventory.backend.inventory.domain.model.queries.GetProductsByUserIdQuery;
 import easyinventory.backend.inventory.domain.services.ProductCommandService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/v1/products", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Products", description = "Products Management Endpoints")
@@ -28,6 +30,17 @@ public class ProductController {
     public ProductController(ProductCommandService productCommandService, ProductQueryService productQueryService) {
         this.productCommandService = productCommandService;
         this.productQueryService = productQueryService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResource>> getAllProducts(){
+        var getAllProductsQuery = new GetAllProductsQuery();
+        var products = productQueryService.handle(getAllProductsQuery);
+        if (products.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var productResource = products.stream().map(ProductResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(productResource);
     }
 
     @PostMapping

@@ -2,6 +2,7 @@ package easyinventory.backend.inventory.interfaces.rest;
 
 import easyinventory.backend.inventory.domain.model.commands.DeleteCustomerCommand;
 import easyinventory.backend.inventory.domain.model.commands.UpdateCustomerCommand;
+import easyinventory.backend.inventory.domain.model.queries.GetAllCustomersQuery;
 import easyinventory.backend.inventory.domain.model.queries.GetCustomerByIdQuery;
 import easyinventory.backend.inventory.domain.services.CustomerCommandService;
 import easyinventory.backend.inventory.domain.services.CustomerQueryService;
@@ -16,6 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/v1/customers", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Customers", description = "Customers Management Endpoints")
@@ -72,4 +76,16 @@ public class CustomerController {
         var customerId = customerCommandService.handle(deleteCustomerCommand);
         return ResponseEntity.ok(customerId);
     }
+
+    @GetMapping()
+    public ResponseEntity<List<CustomerResource>> getAllCustomers(){
+        var getAllCustomersQuery = new GetAllCustomersQuery();
+        var customers = customerQueryService.handle(getAllCustomersQuery);
+        if (customers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var customerResource = customers.stream().map(CustomerResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(customerResource);
+    }
+
 }
