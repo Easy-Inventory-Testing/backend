@@ -1,12 +1,13 @@
 package easyinventory.backend.inventory.interfaces.rest;
 
+import easyinventory.backend.inventory.application.internal.dtos.SaleRequestDto;
 import easyinventory.backend.inventory.domain.model.commands.DeleteSaleCommand;
 import easyinventory.backend.inventory.domain.model.queries.GetAllSalesQuery;
 import easyinventory.backend.inventory.domain.model.queries.GetSaleByIdQuery;
 import easyinventory.backend.inventory.domain.services.SaleCommandService;
 import easyinventory.backend.inventory.domain.services.SaleQueryService;
-import easyinventory.backend.inventory.interfaces.rest.resources.CreateSaleResource;
 import easyinventory.backend.inventory.interfaces.rest.resources.SaleResource;
+import easyinventory.backend.inventory.interfaces.rest.resources.UpdateSaleResource;
 import easyinventory.backend.inventory.interfaces.rest.transform.CreateSaleCommandFromResourceAssembler;
 import easyinventory.backend.inventory.interfaces.rest.transform.SaleResourceFromEntityAssembler;
 import easyinventory.backend.inventory.interfaces.rest.transform.UpdateSaleCommandFromResourceAssembler;
@@ -32,8 +33,8 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<SaleResource> createSale(@RequestBody CreateSaleResource resource){
-        var createSaleCommand = CreateSaleCommandFromResourceAssembler.toCommandFromResource(resource);
+    public ResponseEntity<SaleResource> createSale(@RequestBody List<SaleRequestDto> saleRequestDtoList){
+        var createSaleCommand = CreateSaleCommandFromResourceAssembler.toCommandFromDto(saleRequestDtoList);
         var saleId = saleCommandService.handle(createSaleCommand);
         if(saleId == 0L){
             return ResponseEntity.badRequest().build();
@@ -48,7 +49,7 @@ public class SaleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SaleResource> putSale(@PathVariable Long id, @RequestBody CreateSaleResource resource){
+    public ResponseEntity<SaleResource> putSale(@PathVariable Long id, @RequestBody UpdateSaleResource resource){
         var updateSaleCommand = UpdateSaleCommandFromResourceAssembler.toCommandFromResource(id, resource);
         var updatedSale = saleCommandService.handle(updateSaleCommand);
         if(updatedSale.isEmpty()){

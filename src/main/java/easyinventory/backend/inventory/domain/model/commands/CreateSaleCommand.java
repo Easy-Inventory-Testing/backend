@@ -1,4 +1,8 @@
 package easyinventory.backend.inventory.domain.model.commands;
 
-public record CreateSaleCommand(String name, String saleDate, Integer totalCost) {
+import easyinventory.backend.inventory.application.internal.dtos.SaleRequestDto;
+
+import java.util.List;
+
+public record CreateSaleCommand(List<SaleRequestDto> saleRequestDtoList) {
 }

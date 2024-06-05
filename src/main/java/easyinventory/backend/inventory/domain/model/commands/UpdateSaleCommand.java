@@ -1,4 +1,6 @@
 package easyinventory.backend.inventory.domain.model.commands;
 
-public record UpdateSaleCommand(Long id, String name, String saleDate, Integer totalCost) {
+import java.util.Date;
+
+public record UpdateSaleCommand(Long id, String name, Date saleDate, Integer totalCost) {
 }

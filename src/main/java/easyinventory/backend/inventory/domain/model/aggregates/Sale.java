@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,16 +17,15 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     private String name ;
-    private String saleDate ;
+    private Date saleDate ;
     private Integer totalCost ;
-    @OneToMany
-    private List<Product> products;
+    @ManyToMany
+    private List<Product> products = new ArrayList<>();
 
-    public Sale(String name, String saleDate, Integer totalCost) {
+    public Sale(String name, Date saleDate, Integer totalCost) {
         this.name = name;
         this.saleDate = saleDate;
         this.totalCost = totalCost;
-        this.products = new ArrayList<>();
     }
 
     //obtener cantidad de productos
@@ -52,10 +52,6 @@ public class Sale {
         }
         return this.totalCost;
     }
-
-
-
-
 
     public Sale() {}
 }

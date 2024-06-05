@@ -10,6 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +31,15 @@ public class SaleQueryServiceImplTest {
 
     @Before
     public void setUp() {
-        sale = new Sale("Venta", "2022-01-01", 100);
+        String dateString = "2022-01-01";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = formatter.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        sale = new Sale("Venta", date, 100);
         when(saleRepository.findById(anyLong())).thenReturn(Optional.of(sale));
     }
 
