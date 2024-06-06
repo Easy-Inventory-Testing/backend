@@ -70,9 +70,9 @@ public class SaleController {
         return ResponseEntity.ok(saleResource);
     }
 
-    @DeleteMapping("/{name}")
-    public ResponseEntity<Long> deleteSale(@PathVariable String name){
-        var deleteSaleCommand = new DeleteSaleCommand(name);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> deleteSale(@PathVariable Long id){
+        var deleteSaleCommand = new DeleteSaleCommand(id);
         var saleId = saleCommandService.handle(deleteSaleCommand);
         return ResponseEntity.ok(saleId);
     }

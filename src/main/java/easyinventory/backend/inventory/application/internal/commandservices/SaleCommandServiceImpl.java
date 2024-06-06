@@ -56,7 +56,7 @@ public class SaleCommandServiceImpl implements SaleCommandService {
 
     @Override
     public Long handle(DeleteSaleCommand command) {
-        var sale = saleRepository.findByName(command.name()).orElseThrow(() -> new RuntimeException("Sale not found"));
+        var sale = saleRepository.findById(command.id()).orElseThrow(() -> new RuntimeException("Sale not found"));
         saleRepository.delete(sale);
         return sale.getId();
     }
