@@ -97,7 +97,7 @@ public class SaleCommandServiceImplTest {
 
     @Test
     public void testHandleDeleteSaleCommand() {
-        DeleteSaleCommand command = new DeleteSaleCommand("Venta");
+        DeleteSaleCommand command = new DeleteSaleCommand(1L);
         Long deletedSaleId = saleCommandService.handle(command);
         assertEquals(sale.getId(), deletedSaleId);
         verify(saleRepository, times(1)).findByName(anyString());

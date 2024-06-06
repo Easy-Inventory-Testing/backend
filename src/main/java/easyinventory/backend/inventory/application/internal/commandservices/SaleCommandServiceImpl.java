@@ -70,6 +70,12 @@ public class SaleCommandServiceImpl implements SaleCommandService {
 
         Product product = optionalProduct.get();
 
+        try {
+            product.discountStock(quantity);
+        }catch (IllegalArgumentException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
         return IntStream.range(0, quantity)
                 .mapToObj(i -> product)
                 .collect(Collectors.toList());
