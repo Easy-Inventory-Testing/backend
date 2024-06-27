@@ -1,0 +1,14 @@
+version: '3'
+services:
+  ### SQL database for messages
+  db-easyinventory:
+    container_name: db-easyinventory
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: easyinventory
+    ports:
+      - "3307:3306"
+    expose:
+      - 3306
